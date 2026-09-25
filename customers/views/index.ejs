@@ -1,0 +1,194 @@
+<%- include('partials/header') %>
+
+<% 
+    // ชุดข้อมูลน้ำหนัก (กรัม) กลางสำหรับหน้าแรก
+    const weightMap = {
+        'หมูสไลด์': '50', 'หมูสามชั้น': '50', 'สามชั้นสไลด์': '50', 'สันคอหมู': '50',
+        'เนื้อวัวสไลด์': '50', 'เนื้อริบอาย': '50', 'เนื้อหมักนุ่ม': '50', 'หมูหมักนุ่ม': '50',
+        'ตับหมู': '50', 'เซี่ยงจี้': '50', 'สไบนาง': '50', 'ไก่หมัก': '50', 'เบคอน': '50', 'ไส้อ่อน': '50',
+        'กุ้งสด': '50', 'กุ้งแกะเปลือก': '50', 'ปลาหมึกสด': '50', 'ปลาหมึกกรอบ': '50',
+        'ปลาดอลลี่': '60', 'แมงกะพรุน': '50', 'หอยแมลงภู่': '60',
+        'ผักกาดขาว': '50', 'ผักบุ้ง': '50', 'กะหล่ำปลี': '50', 'ปวยเล้ง': '50',
+        'รากบัว': '50', 'มันฝรั่ง': '50', 'ฟักทอง': '50', 'ข้าวโพดหวาน': '60',
+        'เห็ดเข็มทอง': '50', 'เห็ดชิเมจิ': '50', 'เห็ดออรินจิ': '50', 'เห็ดหูหนู': '50',
+        'เต้าหู้ปลา': '50', 'เต้าหู้ชีส': '50', 'ลูกชิ้นกุ้ง': '50', 'ลูกชิ้นหมู': '50',
+        'ลูกชิ้นเนื้อ': '50', 'ลูกชิ้นปลา': '50', 'ปูอัด': '50', 'ไส้กรอก': '50',
+        'ฟองเต้าหู้ซีฟู้ด': '50', 'ฟองเต้าหู้ม้วน': '30', 'ฟองเต้าหู้แผ่น': '30', 'เลือดเป็ด': '60',
+        'เส้นมันเทศ': '60', 'เส้นมันจีน': '60', 'เส้นบุก': '50', 'วุ้นเส้น': '40',
+        'บะหมี่หยก': '50', 'มาม่า': '50'
+    };
+%>
+
+<!-- 1. แถบชื่อร้าน + เลขโต๊ะ ใหม่ (ไม่มีปุ่มตะกร้าฝั่งขวา) -->
+<div class="topbar-mockup">
+    <div class="brand">
+        <span class="icon">🍲</span> หมาล่า self service
+    </div>
+    <div class="table-number">โต๊ะ: <%= typeof tableNumber !== 'undefined' ? tableNumber : '05' %></div>
+</div>
+
+<!-- 2. แบนเนอร์แสดงโปรโมชัน -->
+<div class="banner-container">
+    <img src="/images/banner.jpg" alt="ยินดีต้อนรับ" class="promo-banner">
+</div>
+
+<!-- 3. Main Navbar ด้านบน -->
+<div class="main-navbar-wrapper">
+    <div class="main-navbar" id="mainNavbar">
+        <a href="#sec-all" class="nav-pill active" data-target="sec-all">ทั้งหมด</a>
+        <a href="#sec-soup" class="nav-pill" data-target="sec-soup">ซุป</a>
+        <a href="#sec-ingredients" class="nav-pill" data-target="sec-ingredients">วัตถุดิบ</a>
+        <a href="#sec-snack" class="nav-pill" data-target="sec-snack">ของทานเล่น</a>
+        <a href="#sec-drink" class="nav-pill" data-target="sec-drink">เครื่องดื่ม</a>
+    </div>
+</div>
+
+<div class="main-container" id="sec-all">
+
+    <!-- หมวดหมู่น้ำซุป -->
+    <div id="sec-soup" class="main-section" style="scroll-margin-top: 70px;">
+        <div class="section-title">เลือกประเภทน้ำซุป</div>
+        <div class="soup-grid">
+            <% (menus['ซุป'] || []).forEach(item => { %>
+                <a href="/menu/<%= item.Menu_ID %>" class="soup-card">
+                    <img src="<%= item.Image_URL || 'https://via.placeholder.com/150' %>" alt="<%= item.Menu_Name %>">
+                    <div class="soup-info">
+                        <div class="soup-title"><%= item.Menu_Name %></div>
+                        <div class="soup-price"><%= item.Price %> บาท</div>
+                    </div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+
+    <!-- หมวดหมู่วัตถุดิบ -->
+    <div id="sec-ingredients" class="main-section" style="scroll-margin-top: 70px; margin-top: 25px;">
+        <div class="section-title">วัตถุดิบ</div>
+        
+        <div class="ingredients-layout">
+            <div class="sub-sidebar" id="subSidebar">
+                <a href="#sub-meat" class="sub-pill active" data-sub="sub-meat">เนื้อสัตว์</a>
+                <a href="#sub-seafood" class="sub-pill" data-sub="sub-seafood">ซีฟู้ด</a>
+                <a href="#sub-veg" class="sub-pill" data-sub="sub-veg">ผัก</a>
+                <a href="#sub-ball" class="sub-pill" data-sub="sub-ball">ลูกชิ้นและแปรรูป</a>
+                <a href="#sub-noodle" class="sub-pill" data-sub="sub-noodle">เส้น</a>
+                <a href="#sub-other" class="sub-pill" data-sub="sub-other">อื่นๆ</a>
+            </div>
+
+            <div class="ingredients-content">
+                <% const subCats = [
+                    { id: 'sub-meat', name: 'เนื้อสัตว์' },
+                    { id: 'sub-seafood', name: 'ซีฟู้ด' },
+                    { id: 'sub-veg', name: 'ผัก' },
+                    { id: 'sub-ball', name: 'ลูกชิ้นและของแปรรูป' },
+                    { id: 'sub-noodle', name: 'เส้น' },
+                    { id: 'sub-other', name: 'อื่นๆ' }
+                ]; %>
+
+                <% subCats.forEach(sub => { %>
+                    <div id="<%= sub.id %>" class="sub-section">
+                        <div class="sub-section-title"><%= sub.name %></div>
+                        <div class="horizontal-item-list">
+                            <% (menus[sub.name] || []).forEach(item => { %>
+                                <a href="/menu/<%= item.Menu_ID %>" class="horizontal-card">
+                                    <img src="<%= item.Image_URL || 'https://via.placeholder.com/60' %>" alt="<%= item.Menu_Name %>">
+                                    <div class="item-details">
+                                        <div class="item-name"><%= item.Menu_Name %></div>
+                                        <!-- อัปเดตการดึงน้ำหนักให้สัมพันธ์กับ weightMap -->
+                                        <div class="item-weight"><%= weightMap[item.Menu_Name] || '50' %> กรัม</div>
+                                    </div>
+                                    <div class="item-price"><%= item.Price %> บาท</div>
+                                </a>
+                            <% }) %>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+        </div>
+    </div>
+
+    <!-- หมวดของทานเล่น -->
+    <div id="sec-snack" class="main-section" style="scroll-margin-top: 70px; margin-top: 25px;">
+        <div class="section-title">ของทานเล่น</div>
+        <div class="horizontal-item-list">
+            <% (menus['ของทานเล่น'] || []).forEach(item => { %>
+                <a href="/menu/<%= item.Menu_ID %>" class="horizontal-card">
+                    <img src="<%= item.Image_URL || 'https://via.placeholder.com/60' %>" alt="<%= item.Menu_Name %>">
+                    <div class="item-details">
+                        <div class="item-name"><%= item.Menu_Name %></div>
+                        <div class="item-weight"><%= item.Weight || '1' %> จาน</div>
+                    </div>
+                    <div class="item-price"><%= item.Price %> บาท</div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+
+    <!-- หมวดเครื่องดื่ม -->
+    <div id="sec-drink" class="main-section" style="scroll-margin-top: 70px; margin-top: 25px;">
+        <div class="section-title">เครื่องดื่ม</div>
+        <div class="horizontal-item-list">
+            <% (menus['เครื่องดื่ม'] || []).forEach(item => { %>
+                <a href="/menu/<%= item.Menu_ID %>" class="horizontal-card">
+                    <img src="<%= item.Image_URL || 'https://via.placeholder.com/60' %>" alt="<%= item.Menu_Name %>">
+                    <div class="item-details">
+                        <div class="item-name"><%= item.Menu_Name %></div>
+                        <div class="item-weight"><%= item.Weight || '1' %> ขวด/แก้ว</div>
+                    </div>
+                    <div class="item-price"><%= item.Price %> บาท</div>
+                </a>
+            <% }) %>
+        </div>
+    </div>
+
+</div>
+
+<!-- แถบตะกร้าสินค้าลอยตัวด้านล่างสุด -->
+<% if (typeof cartItemCount !== 'undefined' && cartItemCount > 0) { %>
+    <a href="/cart" class="floating-cart-bar">
+        <span>ตะกร้าสินค้า</span>
+        <span>🛒 <%= cartItemCount %> รายการ (฿<%= typeof cartTotal !== 'undefined' ? cartTotal : 0 %>)</span>
+    </a>
+<% } %>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const mainPills = document.querySelectorAll('.nav-pill');
+    const subPills = document.querySelectorAll('.sub-pill');
+
+    window.addEventListener('scroll', () => {
+        let currentMain = 'sec-all';
+        let currentSub = 'sub-meat';
+
+        document.querySelectorAll('.main-section').forEach(sec => {
+            const top = sec.offsetTop - 100;
+            if (window.scrollY >= top) {
+                currentMain = sec.getAttribute('id');
+            }
+        });
+
+        mainPills.forEach(pill => {
+            pill.classList.remove('active');
+            if (pill.getAttribute('data-target') === currentMain) {
+                pill.classList.add('active');
+            }
+        });
+
+        document.querySelectorAll('.sub-section').forEach(sec => {
+            const top = sec.offsetTop - 120;
+            if (window.scrollY >= top) {
+                currentSub = sec.getAttribute('id');
+            }
+        });
+
+        subPills.forEach(pill => {
+            pill.classList.remove('active');
+            if (pill.getAttribute('data-sub') === currentSub) {
+                pill.classList.add('active');
+            }
+        });
+    });
+});
+</script>
+
+<%- include('partials/footer') %>

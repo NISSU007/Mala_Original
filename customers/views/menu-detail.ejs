@@ -1,0 +1,193 @@
+<%- include('partials/header') %>
+
+<% 
+    const isSoup = categoryGroup === 'ซุป' || item.Menu_Name.includes('ซุป') || item.Menu_Name.includes('น้ำซุป') || item.Menu_Name.includes('ผสม 2 น้ำ');
+    const isMixedSoup = item.Menu_Name.includes('ผสม 2 น้ำ');
+    const isDrinkOrSnack = categoryGroup === 'เครื่องดื่ม' || categoryGroup === 'ของทานเล่น';
+    const isIngredient = !isSoup && !isDrinkOrSnack;
+
+    const weightMap = {
+        'หมูสไลด์': '50', 'หมูสามชั้น': '50', 'สามชั้นสไลด์': '50', 'สันคอหมู': '50',
+        'เนื้อวัวสไลด์': '50', 'เนื้อริบอาย': '50', 'เนื้อหมักนุ่ม': '50', 'หมูหมักนุ่ม': '50',
+        'ตับหมู': '50', 'เซี่ยงจี้': '50', 'สไบนาง': '50', 'ไก่หมัก': '50', 'เบคอน': '50', 'ไส้อ่อน': '50',
+        'กุ้งสด': '50', 'กุ้งแกะเปลือก': '50', 'ปลาหมึกสด': '50', 'ปลาหมึกกรอบ': '50',
+        'ปลาดอลลี่': '60', 'แมงกะพรุน': '50', 'หอยแมลงภู่': '60',
+        'ผักกาดขาว': '50', 'ผักบุ้ง': '50', 'กะหล่ำปลี': '50', 'ปวยเล้ง': '50',
+        'รากบัว': '50', 'มันฝรั่ง': '50', 'ฟักทอง': '50', 'ข้าวโพดหวาน': '60',
+        'เห็ดเข็มทอง': '50', 'เห็ดชิเมจิ': '50', 'เห็ดออรินจิ': '50', 'เห็ดหูหนู': '50',
+        'เต้าหู้ปลา': '50', 'เต้าหู้ชีส': '50', 'ลูกชิ้นกุ้ง': '50', 'ลูกชิ้นหมู': '50',
+        'ลูกชิ้นเนื้อ': '50', 'ลูกชิ้นปลา': '50', 'ปูอัด': '50', 'ไส้กรอก': '50',
+        'ฟองเต้าหู้ซีฟู้ด': '50', 'ฟองเต้าหู้ม้วน': '30', 'ฟองเต้าหู้แผ่น': '30', 'เลือดเป็ด': '60',
+        'เส้นมันเทศ': '60', 'เส้นมันจีน': '60', 'เส้นบุก': '50', 'วุ้นเส้น': '40',
+        'บะหมี่หยก': '50', 'มาม่า': '50'
+    };
+    
+    const itemWeight = weightMap[item.Menu_Name] || '50';
+
+    const isEditing = typeof editItem !== 'undefined' && editItem !== null;
+    const currentSpice = isEditing && editItem.spiceLevel ? editItem.spiceLevel : 'เผ็ดกลาง';
+    const currentNote = isEditing && editItem.note ? editItem.note : '';
+    const currentQty = isEditing && editItem.quantity ? editItem.quantity : 1;
+    
+    let currentMixed = isEditing && editItem.mixedSoupTypes ? editItem.mixedSoupTypes : [];
+    if (currentMixed && !Array.isArray(currentMixed)) {
+        currentMixed = [currentMixed];
+    }
+%>
+
+<div class="menu-detail-wrapper">
+    <div class="menu-header-row">
+        <div class="menu-title-group">
+            <a href="<%= isEditing ? '/cart' : '/' %>" class="btn-back">&#8592;</a>
+            <h2>
+                <%= item.Menu_Name %>
+                <% if (isIngredient) { %>
+                    <span style="font-weight: normal; color: #666; font-size: 0.85em; margin-left: 4px;">
+                        (<%= itemWeight %> กรัม)
+                    </span>
+                <% } %>
+            </h2>
+        </div>
+        <% if (!isSoup) { %>
+            <span class="menu-price-text"><%= item.Price %> บาท</span>
+        <% } %>
+    </div>
+
+    <% if (item.Image_URL) { %>
+        <img src="<%= item.Image_URL %>" alt="<%= item.Menu_Name %>" class="<%= isSoup ? 'menu-img-large' : 'menu-img-medium' %>">
+    <% } else { %>
+        <div class="menu-img-placeholder <%= !isSoup ? 'medium' : '' %>"></div>
+    <% } %>
+
+    <form action="/cart/add" method="POST">
+        <input type="hidden" name="menuId" value="<%= item.Menu_ID %>">
+        <input type="hidden" name="menuName" value="<%= item.Menu_Name %>">
+        <input type="hidden" id="basePrice" name="price" value="<%= item.Price %>">
+        
+        <% if (isEditing) { %>
+            <input type="hidden" name="cartItemId" value="<%= cartItemId %>">
+        <% } %>
+
+        <% if (isSoup) { %>
+            <label class="section-title">เลือกระดับความเผ็ด</label>
+            <div class="spice-grid">
+                <% ['ไม่เผ็ด', 'เผ็ดน้อย', 'เผ็ดกลาง', 'เผ็ดมาก'].forEach((level, i) => { %>
+                    <label class="spice-item">
+                        <input type="radio" name="spiceLevel" value="<%= level %>" <%= currentSpice === level ? 'checked' : '' %>>
+                        <div class="spice-card">
+                            <img src="/images/spice<%= i %>.jpg" alt="<%= level %>" onerror="this.style.display='none'">
+                            <span><%= level %></span>
+                        </div>
+                    </label>
+                <% }); %>
+            </div>
+            
+            <% if (isMixedSoup) { %>
+                <label class="section-title" style="margin-top: 15px;">เลือกประเภทน้ำซุป (เลือก 2 อย่าง)</label>
+                <div class="soup-type-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 25px;">
+                    <% const soupOptions = ['น้ำซุปหม่าล่าดั้งเดิม', 'น้ำซุปหม่าล่าต้มยำ', 'น้ำซุปหม่าล่านม', 'น้ำซุปใส', 'น้ำซุปกระดูกหมู', 'น้ำซุปดำ']; %>
+                    <% soupOptions.forEach((soup) => { %>
+                        <label class="soup-type-item">
+                            <input type="checkbox" name="mixedSoupTypes" value="<%= soup %>" <%= currentMixed.includes(soup) ? 'checked' : '' %>>
+                            <div class="soup-type-card">
+                                <%= soup %>
+                            </div>
+                        </label>
+                    <% }); %>
+                </div>
+            <% } %>
+
+            <input type="hidden" id="qtyInput" name="quantity" value="1">
+            
+        <% } else { %>
+            <div class="qty-section">
+                <div class="qty-control-center">
+                    <button type="button" class="btn-qty" onclick="changeQty(-1)">-</button>
+                    <input type="text" id="qtyInput" class="qty-input-text" name="quantity" value="<%= currentQty %>" readonly>
+                    <button type="button" class="btn-qty" onclick="changeQty(1)">+</button>
+                </div>
+                <span class="qty-label">เลือกจำนวน</span>
+            </div>
+
+            <hr class="divider">
+        <% } %>
+
+        <label class="section-title">หมายเหตุ (ถ้ามี)</label>
+        <input type="text" name="note" class="note-input" value="<%= currentNote %>" placeholder="เช่น ไม่ใส่กระเทียม, แยกน้ำ">
+
+        <button type="submit" class="btn-submit-cart">
+            <span><%= isEditing ? 'บันทึกการแก้ไข' : 'เพิ่มลงตะกร้า' %></span>
+            <span id="priceDisplay"><%= item.Price * currentQty %> บาท</span>
+        </button>
+    </form>
+</div>
+
+<style>
+    .soup-type-item input[type="checkbox"] { display: none; }
+    .soup-type-card {
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        padding: 12px 10px;
+        text-align: center;
+        font-size: 0.95rem;
+        font-weight: bold;
+        color: #555;
+        background: #fff;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    .soup-type-item input[type="checkbox"]:checked + .soup-type-card {
+        border-color: #d32f2f;
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+</style>
+
+<script>
+    function changeQty(change) {
+        let qtyInput = document.getElementById('qtyInput');
+        let currentQty = parseInt(qtyInput.value) || 1;
+        let newQty = currentQty + change;
+        
+        if (newQty >= 1) {
+            qtyInput.value = newQty;
+            updatePrice(newQty);
+        }
+    }
+
+    function updatePrice(qty) {
+        let basePrice = parseFloat(document.getElementById('basePrice').value);
+        let totalPrice = basePrice * qty;
+        document.getElementById('priceDisplay').innerText = totalPrice + " บาท";
+    }
+</script>
+
+<% if (isMixedSoup) { %>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('input[name="mixedSoupTypes"]');
+        const form = document.querySelector('form');
+        
+        checkboxes.forEach(box => {
+            box.addEventListener('change', function() {
+                const checkedBoxes = document.querySelectorAll('input[name="mixedSoupTypes"]:checked');
+                
+                if (checkedBoxes.length > 2) {
+                    this.checked = false; 
+                    alert('สามารถผสมน้ำซุปได้สูงสุด 2 อย่างครับ');
+                }
+            });
+        });
+        
+        form.addEventListener('submit', function(e) {
+            const checkedCount = document.querySelectorAll('input[name="mixedSoupTypes"]:checked').length;
+            if (checkedCount !== 2) {
+                e.preventDefault(); 
+                alert('กรุณาเลือกน้ำซุปให้ครบ 2 อย่างก่อนทำรายการครับ');
+            }
+        });
+    });
+</script>
+<% } %>
+
+<%- include('partials/footer') %>

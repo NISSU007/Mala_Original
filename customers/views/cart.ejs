@@ -1,0 +1,111 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/style.css">
+
+<div class="cart-page-mockup">
+    <div class="cart-topbar">
+        <div class="brand">
+            <span class="icon">🍲</span> หมาล่า self service
+        </div>
+        <div class="table-number">โต๊ะ: <%= typeof tableNumber !== 'undefined' ? tableNumber : '05' %></div>
+    </div>
+
+    <div class="cart-title-row">
+        <a href="/" class="btn-back-arrow">←</a>
+        <h2>ตะกร้าสินค้า</h2>
+    </div>
+
+    <div class="cart-items-wrapper">
+        <% if (typeof cart !== 'undefined' && cart && cart.length > 0) { %>
+            <% cart.forEach((item) => { 
+                const isSoup = item.menuName && (item.menuName.includes('ซุป') || item.menuName.includes('น้ำซุป') || item.menuName.includes('ผสม 2 น้ำ'));
+            %>
+                <div class="mockup-card">
+                    <div class="card-img-box">
+                        <% if (item.image_url || item.Image_URL) { %>
+                            <img src="<%= item.image_url || item.Image_URL %>" alt="<%= item.menuName %>">
+                        <% } else { %>
+                            <div class="img-placeholder"></div>
+                        <% } %>
+                    </div>
+                    
+                    <div class="card-info">
+                        <div class="item-name" style="font-weight: bold;"><%= item.menuName %></div>
+                        <div class="item-sub" style="font-size: 0.85rem; color: #555; margin-top: 2px;">
+                            <% if (isSoup) { %>
+                                <div><%= item.spiceLevel || 'เผ็ดปกติ' %></div>
+                                <% if (item.mixedSoupTypes && item.mixedSoupTypes.length > 0) { %>
+                                    <% 
+                                        let soupText = Array.isArray(item.mixedSoupTypes) 
+                                            ? item.mixedSoupTypes.join(' + ') 
+                                            : item.mixedSoupTypes; 
+                                    %>
+                                    <div style="color: #d32f2f; font-weight: bold; margin-top: 2px; font-size: 0.8rem;">
+                                        (<%= soupText %>)
+                                    </div>
+                                <% } %>
+                                <% if (item.note) { %>
+                                    <div style="color: #777; font-size: 0.8rem; margin-top: 2px;">*<%= item.note %></div>
+                                <% } %>
+                            <% } else { %>
+                                <% if (item.spiceLevel) { %><%= item.spiceLevel %> | <% } %>จำนวน <%= item.quantity %> ชุด<% if (item.note) { %> (<%= item.note %>)<% } %>
+                            <% } %>
+                        </div>
+                    </div>
+
+                    <div class="card-actions-right">
+                        <div class="item-price" style="font-weight: bold;"><%= item.subtotal || item.price %> บาท</div>
+                        
+                        <div class="action-group" style="margin-top: 10px;">
+                            <% if (isSoup) { %>
+                                <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end;">
+                                    <a href="/menu/<%= item.menuId %>?cartItemId=<%= item.cartItemId %>" class="btn-edit-text" style="color: #6a1b9a; text-decoration: underline; font-size: 0.9rem;">แก้ไข</a>
+                                    
+                                    <form action="/cart/remove" method="POST" style="display:inline; margin:0;">
+                                        <input type="hidden" name="cartItemId" value="<%= item.cartItemId %>">
+                                        <button type="submit" class="btn-remove-text" style="background:none; border:none; color:#d32f2f; font-weight:bold; cursor:pointer;">ลบ</button>
+                                    </form>
+                                </div>
+                            <% } else { %>
+                                <div class="qty-picker-mini" style="margin-bottom: 6px;">
+                                    <form action="/cart/update" method="POST" style="display:inline;">
+                                        <input type="hidden" name="cartItemId" value="<%= item.cartItemId %>">
+                                        <input type="hidden" name="action" value="decrease">
+                                        <button type="submit">-</button>
+                                    </form>
+                                    <span class="qty-num-mini"><%= item.quantity %></span>
+                                    <form action="/cart/update" method="POST" style="display:inline;">
+                                        <input type="hidden" name="cartItemId" value="<%= item.cartItemId %>">
+                                        <input type="hidden" name="action" value="increase">
+                                        <button type="submit">+</button>
+                                    </form>
+                                </div>
+
+                                <div style="display: flex; gap: 12px; align-items: center; justify-content: flex-end;">
+                                    <a href="/menu/<%= item.menuId %>?cartItemId=<%= item.cartItemId %>" class="btn-edit-text" style="color: #6a1b9a; text-decoration: underline; font-size: 0.9rem;">แก้ไข</a>
+                                    <form action="/cart/remove" method="POST" style="display:inline; margin:0;">
+                                        <input type="hidden" name="cartItemId" value="<%= item.cartItemId %>">
+                                        <button type="submit" class="btn-remove-text" style="padding:0; background:none; border:none; color:#d32f2f; font-weight:bold; cursor:pointer;">ลบ</button>
+                                    </form>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p style="text-align: center; padding: 30px 0; color: #777;">ไม่มีรายการสินค้าในตะกร้า</p>
+        <% } %>
+    </div>
+
+    <div class="cart-summary-section">
+        <div class="summary-line">
+            <span>ยอดรวมทั้งหมด</span>
+            <span><%= typeof cartTotal !== 'undefined' ? cartTotal : 0 %> บาท</span>
+        </div>
+    </div>
+
+    <!-- ปุ่มกดไปหน้าสรุปรายการสั่งซื้อ (Checkout) -->
+    <a href="/checkout" class="btn-red-checkout" style="display:block; text-decoration:none; text-align:center;">ยืนยันคำสั่งซื้อ</a>
+</div>
+
+<%- include('partials/footer') %>

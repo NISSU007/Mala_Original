@@ -1,0 +1,664 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    padding-bottom: 90px;
+}
+
+/* ==========================================
+   สไตล์ Topbar และ Banner
+   ========================================== */
+
+.topbar-mockup {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    padding: 14px 16px;
+    font-weight: 800;
+    font-size: 1.1rem;
+    background-color: #fff;
+}
+
+.topbar-mockup .brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.topbar-mockup .table-number {
+    font-size: 1.05rem;
+}
+
+.banner-container {
+    width: 100%;
+    padding: 12px 16px 4px 16px;
+    box-sizing: border-box;
+    background-color: #fff;
+}
+
+.promo-banner {
+    width: 100%;
+    height: auto;
+    max-height: 160px;
+    object-fit: cover;
+    display: block;
+    border: 2px solid #000;
+    border-radius: 12px;
+}
+
+/* ==========================================
+   ส่วน Navbar และ Layout หลัก
+   ========================================== */
+
+.main-navbar-wrapper {
+    position: sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1000;
+    padding: 10px 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-bottom: 1px solid #eee;
+}
+
+.main-navbar {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 0 12px;
+    scrollbar-width: none;
+}
+
+.nav-pill {
+    white-space: nowrap;
+    padding: 6px 16px;
+    background: #fff;
+    color: #333;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    border: 1px solid #ccc;
+}
+
+.nav-pill.active {
+    background: #d32f2f;
+    color: #fff;
+    border-color: #d32f2f;
+    font-weight: bold;
+}
+
+.main-container {
+    padding: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 10px 0;
+    display: block;
+}
+
+/* --- หมวดน้ำซุป (Grid 2 คอลัมน์) --- */
+.soup-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.soup-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    text-align: center;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.soup-card img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.soup-info {
+    margin-top: 8px;
+}
+
+.soup-title {
+    font-size: 0.95rem;
+    font-weight: bold;
+}
+
+.soup-price {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 2px;
+}
+
+/* --- หมวดวัตถุดิบ --- */
+.ingredients-layout {
+    display: flex;
+    gap: 10px;
+}
+
+.sub-sidebar {
+    width: 90px;
+    position: sticky;
+    top: 60px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.sub-pill {
+    padding: 10px 6px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 0.8rem;
+    text-decoration: none;
+    color: #333;
+    line-height: 1.2;
+}
+
+.sub-pill.active {
+    background: #d32f2f;
+    color: white;
+    border-color: #d32f2f;
+    font-weight: bold;
+}
+
+.ingredients-content {
+    flex: 1;
+}
+
+.sub-section {
+    scroll-margin-top: 70px;
+    margin-bottom: 16px;
+}
+
+.sub-section-title {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #d32f2f;
+    margin-bottom: 8px;
+}
+
+.horizontal-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.horizontal-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 8px 12px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+}
+
+.horizontal-card img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-right: 12px;
+}
+
+.item-details {
+    flex: 1;
+}
+
+.item-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.item-weight {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: 2px;
+}
+
+.item-price {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #111;
+}
+
+/* --- แถบตะกร้าสินค้าลอยตัว --- */
+.floating-cart-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #d32f2f;
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    z-index: 1000;
+    font-weight: bold;
+}
+
+/* ==========================================
+   สไตล์หน้าตะกร้าสินค้า (Cart Page)
+   ========================================== */
+
+.cart-page-mockup {
+    background-color: #fff;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    padding: 0 16px 40px 16px;
+    box-sizing: border-box;
+}
+
+.cart-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #000;
+    padding: 14px 0 10px 0;
+    margin-bottom: 16px;
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.cart-topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cart-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.btn-back-arrow {
+    text-decoration: none;
+    color: #000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.cart-title-row h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+}
+
+.cart-items-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.mockup-card {
+    border: 2px solid #000;
+    border-radius: 14px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #fff;
+}
+
+.card-img-box {
+    width: 52px;
+    height: 52px;
+    border: 1.5px solid #000;
+    border-radius: 10px;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.card-img-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.card-actions-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: space-between;
+    min-height: 52px;
+}
+
+.qty-picker-mini {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #000;
+    border-radius: 4px;
+    height: 22px;
+    overflow: hidden;
+}
+
+.qty-picker-mini button {
+    background: transparent;
+    border: none;
+    width: 20px;
+    height: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+.qty-num-mini {
+    font-size: 0.8rem;
+    font-weight: bold;
+    padding: 0 6px;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    line-height: 22px;
+}
+
+.btn-remove-text {
+    background: transparent;
+    border: none;
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.cart-summary-section {
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 12px 0;
+    margin-top: 20px;
+    margin-bottom: 24px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: #000;
+}
+
+.btn-red-checkout {
+    width: 100%;
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+    border-radius: 25px;
+    padding: 14px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-red-checkout:hover {
+    background-color: #b71c1c;
+}
+
+/* ==========================================
+   หน้ารายละเอียดเมนู (Menu Detail) - ปรับปรุงรวมศูนย์
+   ========================================== */
+
+.menu-detail-wrapper {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* Header: ลูกศรย้อนกลับ + ชื่อเมนู + ราคา */
+.menu-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.menu-title-group {
+    display: flex;
+    align-items: center;
+}
+
+.btn-back {
+    font-size: 1.6rem;
+    text-decoration: none;
+    color: #000;
+    font-weight: bold;
+    margin-right: 10px;
+    line-height: 1;
+}
+
+.btn-back:hover {
+    color: #d32f2f;
+}
+
+.menu-header-row h2 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.menu-price-text {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #000;
+}
+
+/* สไตล์รูปภาพ */
+.menu-img-large {
+    width: 100%;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    border: 2px solid #222;
+    object-fit: cover;
+}
+
+.menu-img-medium {
+    width: 65%;
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 15px;
+    border: 2.5px solid #000;
+    object-fit: cover;
+    aspect-ratio: 1/1;
+}
+
+.menu-img-placeholder {
+    width: 100%;
+    height: 200px;
+    background: #eee;
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+
+.menu-img-placeholder.medium {
+    width: 65%;
+    margin: 0 auto 20px auto;
+    border: 2.5px solid #000;
+}
+
+/* -------------------------------------
+   หมวดน้ำซุป: ตัวเลือกระดับความเผ็ด (Spice Grid & Card)
+------------------------------------- */
+.spice-grid {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.spice-item {
+    flex: 1;
+    cursor: pointer;
+    text-align: center;
+}
+
+.spice-item input[type="radio"] {
+    display: none;
+}
+
+.spice-card {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 10px 5px;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.spice-card img {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+.spice-card span {
+    font-size: 13px;
+    font-weight: bold;
+    color: #555;
+}
+
+.spice-item input[type="radio"]:checked + .spice-card {
+    border-color: #d32f2f;
+    background-color: #ffebee;
+}
+
+.spice-item input[type="radio"]:checked + .spice-card span {
+    color: #d32f2f;
+}
+
+/* -------------------------------------
+   หมวดอื่นๆ: ตัวเลือกจำนวน (- 1 +) แบบคลีน
+------------------------------------- */
+.qty-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.qty-control-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.btn-qty {
+    background: none;
+    border: none;
+    font-size: 36px;
+    font-weight: 300;
+    cursor: pointer;
+    color: #111;
+    padding: 0 10px;
+    line-height: 1;
+}
+
+.qty-input-text {
+    width: 60px;
+    font-size: 32px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: #111;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.qty-label {
+    font-size: 15px;
+    color: #111;
+    margin-top: 6px;
+}
+
+/* -------------------------------------
+   เส้นคั่น, ช่องหมายเหตุ & ปุ่มเพิ่มลงตะกร้า
+------------------------------------- */
+.divider {
+    border: none;
+    border-top: 2px solid #111;
+    margin: 20px 0;
+}
+
+.note-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #222;
+    border-radius: 8px;
+    font-size: 14px;
+    box-sizing: border-box;
+    margin-bottom: 25px;
+}
+
+.note-input:focus {
+    border-color: #d32f2f;
+    outline: none;
+}
+
+.btn-submit-cart {
+    width: 100%;
+    background-color: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-submit-cart:hover {
+    background-color: #b71c1c;
+}

@@ -1,0 +1,129 @@
+<%- include('partials/header') %>
+<link rel="stylesheet" href="/css/style.css">
+
+<div class="cart-page-mockup">
+    <!-- Topbar -->
+    <div class="cart-topbar">
+        <div class="brand">
+            <span class="icon">🍲</span> หมาล่า self service
+        </div>
+        <div class="table-number">โต๊ะ: 05</div>
+    </div>
+
+    <!-- Header Title -->
+    <div class="cart-title-row">
+        <a href="/cart" class="btn-back-arrow">←</a>
+        <h2>สรุปรายการสั่งซื้อ</h2>
+    </div>
+
+    <form action="/checkout" method="POST">
+        <!-- รายการสินค้าสรุปแบบ อ่านได้อย่างเดียว -->
+        <div class="cart-items-wrapper">
+            <% if (typeof cart !== 'undefined' && cart && cart.length > 0) { %>
+                <% cart.forEach((item) => { 
+                    const isSoup = item.menuName && (item.menuName.includes('ซุป') || item.menuName.includes('น้ำซุป') || item.menuName.includes('ผสม 2 น้ำ'));
+                %>
+                    <div class="mockup-card" style="align-items: center;">
+                        <div class="card-img-box">
+                            <% if (item.image_url || item.Image_URL) { %>
+                                <img src="<%= item.image_url || item.Image_URL %>" alt="<%= item.menuName %>">
+                            <% } else { %>
+                                <div class="img-placeholder"></div>
+                            <% } %>
+                        </div>
+                        
+                        <div class="card-info">
+                            <div class="item-name" style="font-weight: bold; font-size: 1rem;"><%= item.menuName %></div>
+                            <div class="item-sub" style="font-size: 0.85rem; color: #555; margin-top: 2px;">
+                                <% if (isSoup) { %>
+                                    <div><%= item.spiceLevel || 'เผ็ดปกติ' %></div>
+                                    <% if (item.mixedSoupTypes && item.mixedSoupTypes.length > 0) { %>
+                                        <% 
+                                            let soupText = Array.isArray(item.mixedSoupTypes) 
+                                                ? item.mixedSoupTypes.join(' + ') 
+                                                : item.mixedSoupTypes; 
+                                        %>
+                                        <div style="color: #d32f2f; font-weight: bold; margin-top: 2px; font-size: 0.8rem;">
+                                            (<%= soupText %>)
+                                        </div>
+                                    <% } %>
+                                <% } else { %>
+                                    <div>จำนวน <%= item.quantity %> ชุด</div>
+                                <% } %>
+                                <% if (item.note) { %>
+                                    <div style="color: #777; font-size: 0.8rem; margin-top: 2px;">*<%= item.note %></div>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <div class="card-actions-right" style="justify-content: center;">
+                            <div class="item-price" style="font-weight: bold; font-size: 1rem;"><%= item.subtotal || item.price %> บาท</div>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+
+        <!-- ยอดรวมทั้งหมด -->
+        <div class="cart-summary-section" style="margin-top: 15px; border-bottom: 2px solid #000; padding-bottom: 10px;">
+            <div class="summary-line" style="font-size: 1.1rem; font-weight: bold;">
+                <span>ยอดรวมทั้งหมด</span>
+                <span><%= typeof cartTotal !== 'undefined' ? cartTotal : 0 %> บาท</span>
+            </div>
+        </div>
+
+        <!-- ตัวเลือกรูปแบบการรับประทาน (ทานที่ร้าน / กลับบ้าน) -->
+        <div class="order-type-section" style="margin: 20px 0;">
+            <label style="font-weight: bold; display: block; margin-bottom: 10px; font-size: 1rem;">เลือกรูปแบบการรับประทาน</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <label class="order-type-card">
+                    <input type="radio" name="orderType" value="ทานที่ร้าน" checked style="display:none;">
+                    <div class="type-box">
+                        <span style="font-size: 1.2rem;">🍽️</span>
+                        <span>ทานที่ร้าน</span>
+                    </div>
+                </label>
+                <label class="order-type-card">
+                    <input type="radio" name="orderType" value="กลับบ้าน" style="display:none;">
+                    <div class="type-box">
+                        <span style="font-size: 1.2rem;">🛍️</span>
+                        <span>กลับบ้าน</span>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <input type="hidden" name="tableId" value="1">
+
+        <!-- ปุ่มกด ชำระเงิน -->
+        <button type="submit" class="btn-red-checkout" style="width: 100%; border: none; cursor: pointer; font-size: 1.1rem; font-weight: bold; padding: 14px; border-radius: 25px; background-color: #d32f2f; color: white; margin-top: 10px;">
+            ชำระเงิน
+        </button>
+    </form>
+</div>
+
+<style>
+    .type-box {
+        border: 2px solid #ccc;
+        border-radius: 12px;
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        font-weight: bold;
+        color: #444;
+        background: #fff;
+        transition: all 0.2s ease;
+    }
+
+    .order-type-card input[type="radio"]:checked + .type-box {
+        border-color: #d32f2f;
+        background-color: #ffebee;
+        color: #d32f2f;
+    }
+</style>
+
+<%- include('partials/footer') %>

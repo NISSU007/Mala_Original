@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+
+<div class="main-container" style="text-align: center; padding-top: 30px;">
+    <div style="background: white; padding: 24px; border-radius: 12px; border: 1px solid #eee;">
+        <div style="font-size: 3rem;">✅</div>
+        <h2 style="color: #2e7d32; margin-top: 10px;">ส่งคำสั่งซื้อสำเร็จ!</h2>
+        <p style="color: #666; margin-top: 8px; font-size: 0.9rem;">รหัสอ้างอิงออเดอร์ของคุณ</p>
+        <h1 style="color: #d32f2f; margin: 10px 0;"><%= order.Reference_Code %></h1>
+        <p style="font-size: 0.85rem; color: #888;">สถานะ: <%= order.Order_Status %></p>
+        
+        <a href="/" class="btn-checkout" style="margin-top: 20px; display: inline-block; width: auto; padding: 10px 30px;">กลับสู่หน้าหลัก</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
